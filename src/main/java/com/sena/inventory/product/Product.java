@@ -1,6 +1,12 @@
 package com.sena.inventory.product;
 
+import javax.persistence.*;
+
+@Entity
+@Table
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private double price;
