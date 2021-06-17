@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -22,13 +23,21 @@ public class ProductService {
 
     }
 
-    public void ValidateDelete(int id) {
+    public boolean ValidateDelete(int id) {
         boolean productExists = productRepository.existsById(id);
-        if(productExists){
-            productRepository.deleteById(id);
-        }else{
+        if(!productExists){
             throw new IllegalStateException("El producto con el id="+id+" no existe hermano(a).");
         }
+        productRepository.deleteById(id);
+        return productExists;
+    }
+
+    public Optional<Product> ObtenerPorId(int id){
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(!optionalProduct.isPresent()){
+            throw new IllegalStateException("El producto no existe");
+        }
+        return optionalProduct;
     }
 
     // productRepository.deleteById(id);

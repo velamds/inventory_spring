@@ -1,9 +1,12 @@
 package com.sena.inventory.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/products")
@@ -21,8 +24,13 @@ public class ProductController {
 
     //localhost:8080/api/products/2
     @DeleteMapping(path="/{id}")
-    public void Delete(@PathVariable int id){
-        //code here
+    @ResponseBody
+    public Optional<Product> Delete(@PathVariable int id){
+        Optional<Product> miProducto = productService.ObtenerPorId(id);
         productService.ValidateDelete(id);
+
+            //mensaje = "Borrado con éxito";
+
+        return miProducto;
     }
 }
