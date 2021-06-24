@@ -19,17 +19,18 @@ public class ProductService {
     public List<Product> getProducts(){
        //Here you should write your bussines logic
 
-       return productRepository.findAll();
+       return productRepository.findByStateTrue();
 
     }
 
-    public boolean ValidateDelete(int id) {
-        boolean productExists = productRepository.existsById(id);
-        if(!productExists){
+    public Product ValidateDelete(int id) {
+        Product product = productRepository.getById(id);
+        if(product == null){
             throw new IllegalStateException("El producto con el id="+id+" no existe hermano(a).");
         }
-        productRepository.deleteById(id);
-        return productExists;
+        product.setState(false);
+
+        return productRepository.save(product);
     }
 
     public Optional<Product> ObtenerPorId(int id){
@@ -40,5 +41,14 @@ public class ProductService {
         return optionalProduct;
     }
 
+    public Product CreateProduct(Product product) {
+        //Tomar las unidades actuales del producto, sumar las que ingresan y actualizar dicha cantidad
+        return productRepository.save(product);
+    }
+
     // productRepository.deleteById(id);
+
+    //productRepository.findById();
+    //productRepository.save(product);
+
 }
