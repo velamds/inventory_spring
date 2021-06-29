@@ -1,5 +1,7 @@
 package com.sena.inventory.product;
 
+import com.sena.inventory.brand.Brand;
+
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -17,12 +19,14 @@ public class Product {
     private double price;
     @DecimalMin(value = "1.0")
     private double cost;
-    @NotNull(message = "debe seleccionar una marca")
-    private Integer brand;
+    //@NotNull(message = "debe seleccionar una marca")
+    @ManyToOne
+    @JoinColumn(name = "brand")
+    private Brand brand;
     @Column(columnDefinition = "boolean default true")
     private Boolean state;
 
-    public Product(Integer id, String name, double price, double cost, Integer brand, Boolean state) {
+    public Product(Integer id, String name, double price, double cost, Brand brand, Boolean state) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -35,7 +39,7 @@ public class Product {
 
     }
 
-    public Product(String name, double price, double cost, Integer brand,Boolean state) {
+    public Product(String name, double price, double cost, Brand brand,Boolean state) {
         this.name = name;
         this.price = price;
         this.cost = cost;
@@ -75,11 +79,11 @@ public class Product {
         this.cost = cost;
     }
 
-    public Integer getBrand() {
+    public Brand getBrand() {
         return brand;
     }
 
-    public void setBrand(Integer brand) {
+    public void setBrand(Brand brand) {
         this.brand = brand;
     }
 

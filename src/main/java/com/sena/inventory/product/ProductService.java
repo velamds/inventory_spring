@@ -1,8 +1,11 @@
 package com.sena.inventory.product;
 
+import com.sena.inventory.brand.Brand;
+import com.sena.inventory.brand.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,10 +13,12 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository, BrandRepository brandRepository){
         this.productRepository = productRepository;
+        this.brandRepository = brandRepository;
     }
 
     public List<Product> getProducts(){
@@ -44,6 +49,18 @@ public class ProductService {
     public Product CreateProduct(Product product) {
         //Tomar las unidades actuales del producto, sumar las que ingresan y actualizar dicha cantidad
         return productRepository.save(product);
+    }
+
+    public List<Product> findGreaterThan(Double price) {
+        return productRepository.findByPriceGreaterThan(price);
+    }
+
+    public List<Product> findByBrand(Integer brandId) {
+        Optional<Brand> myBrand = brandRepository.findById(brandId);
+        if(!myBrand.isPresent()){
+            throw new IllegalStateException("La marca no existe");
+        }
+        return productRepository.findByBrand(myBrand.get());
     }
 
     // productRepository.deleteById(id);

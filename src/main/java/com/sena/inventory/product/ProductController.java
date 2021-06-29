@@ -60,4 +60,14 @@ public class ProductController {
     public Product Delete(@PathVariable int id){
         return productService.ValidateDelete(id);
     }
+
+    @GetMapping("/price/{price}")
+    public List<Product> getGreaterThan(@PathVariable Double price){
+        return productService.findGreaterThan(price);
+    }
+
+    @GetMapping("brand/{brand}")
+    public List<Product> getByBrand(@PathVariable Integer brand){
+        return productService.findByBrand(brand);
+    }
 }
